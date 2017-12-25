@@ -16,7 +16,9 @@ var commentRoutes=require("./routes/comments"),
     indexRoutes=require("./routes/index");
     
     
-mongoose.connect("mongodb://localhost/yelp_camp",{useMongoClient:true});
+// mongoose.connect("mongodb://localhost/yelp_camp",{useMongoClient:true});
+mongoose.connect("mongodb://sharmaditya123:theworldsend@ds131687.mlab.com:31687/yelpcamp",{useMongoClient:true});
+
 mongoose.Promise=global.Promise;
 
 //seed database
