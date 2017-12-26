@@ -15,12 +15,11 @@ var commentRoutes=require("./routes/comments"),
     campgroundRoutes=require("./routes/campgrounds"),
     indexRoutes=require("./routes/index");
     
+var url=process.env.DATABASEURL||"mongodb://localhost/yelp_camp";
+mongoose.Promise=global.Promise;  
+mongoose.connect(url,{useMongoClient:true});
 
-  
-mongoose.connect(process.env.DATABASEURL,{useMongoClient:true});
-// mongoose.connect("mongodb://sharmaditya123:theworldsend@ds131687.mlab.com:31687/yelpcamp",{useMongoClient:true});
-process.env.databaseURL
-mongoose.Promise=global.Promise;
+
 
 //seed database
 // seedDB();
