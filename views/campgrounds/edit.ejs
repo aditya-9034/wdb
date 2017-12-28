@@ -9,7 +9,7 @@
         </div>
         
         <div class="form-group">
-          <input class="form-control" type="number" value="<%=campground.name%>" name="campground[price]">    
+          <input class="form-control" type="number" value="<%=campground.price%>" name="campground[price]">    
         </div>  
         
         <div class="form-group">
@@ -19,6 +19,13 @@
         <div class="form-group">
           <input class="form-control" type="text" value="<%=campground.description%>" name="campground[description]">    
         </div>
+        
+        <div class="form-group">
+           <label for="location">Location</label>
+           <input class="form-control" type="text" name="campground[location]" id="location" value="<%= campground.location %>">
+        </div>
+        
+
         
         <div class="form-group">
           <button class="btn btn-lg btn-primary btn-block">Submit!</button>    
