@@ -20,14 +20,31 @@ router.get("/:id/edit",middleware.checkCampgroundOwnership,function(req,res){
 //UPDATE CAMPGROUND ROUTE
 router.put("/:id", function(req, res){
   geocoder.geocode(req.body.campground.location, function (err, data) {
-    var lat = data.results[0].geometry.location.lat;
-    var lng = data.results[0].geometry.location.lng;
-    var location = data.results[0].formatted_address;
-    var newData = {name: req.body.campground.name,price: req.body.campground.price, image: req.body.campground.image, description: req.body.campground.description,  location: location, lat: lat, lng: lng};
+     var lat,lng,location,newData;
+      if(err){
+          res.redirect('back');
+      }
+    
+    if(data && data.results && data.results.length) {
+     lat = data.results[0].geometry.location.lat;
+     lng = data.results[0].geometry.location.lng;
+     //location=req.body.campground.location;
+     location = data.results[0].formatted_address;
+     newData = { name: req.body.campground.name,
+                price: req.body.campground.price, 
+                image: req.body.campground.image, 
+                description: req.body.campground.description,  
+                location: location, 
+                lat: lat, 
+                lng: lng };   
+    };
+
+    
     Campground.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, campground){
         if(err){
-            req.flash("error", err.message);
-            res.redirect("back");
+            req.flash("error", "There seems to be a problem please submit again!");
+            res.redirect("/campgrounds/"+req.params.id+"/edit");
+            
         } else {
             req.flash("success","Successfully Updated!");
             res.redirect("/campgrounds/" + campground._id);
@@ -78,6 +95,9 @@ router.post("/",middleware.isLoggedIn,function(req,res){
    
    console.log(req.body.campground);
    geocoder.geocode(req.body.location,function(err,data){
+       if(err){
+           res.redirect('back');
+       }
        var lat=data.results[0].geometry.location.lat;
        var lng=data.results[0].geometry.location.lng;
        var location=data.results[0].formatted_address;
