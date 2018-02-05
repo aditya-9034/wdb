@@ -69,16 +69,37 @@ router.delete("/:id",middleware.checkCampgroundOwnership,function(req,res){
 
 //INDEX - show all campgrounds
 router.get("/",function(req,res){
-     Campground.find({},function(err,allCampgrounds){
+    var noMatch=null;
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+         Campground.find({name:regex},function(err,allCampgrounds){
          if(err){
              console.log(err);
          }
          else{
-             res.render("campgrounds/index",{campgrounds:allCampgrounds,page:"campgrounds"});
+             
+             if(allCampgrounds.length<1){
+                 noMatch="No campgrounds match that query, please try again!";
+             }
+             res.render("campgrounds/index",{campgrounds:allCampgrounds,page:"campgrounds",noMatch:noMatch});
+         }
+        });
+    }
+    
+    else{
+         Campground.find({},function(err,allCampgrounds){
+         if(err){
+             console.log(err);
+         }
+         else{
+             res.render("campgrounds/index",{campgrounds:allCampgrounds,page:"campgrounds",noMatch:noMatch});
          }
      });
+    }
+
     //res.render("campgrounds",{campgrounds:campgrounds});
 });
+
 
 
 //CREATE - add new campgrounds to the database
@@ -148,6 +169,8 @@ router.get("/:id",function(req,res){
    
 });
 
-
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports=router;
