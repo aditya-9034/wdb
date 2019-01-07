@@ -2,6 +2,8 @@ var mongoose=require("mongoose");
 var Campground=require("./models/campground");
 var Comment=require("./models/comment");
 
+//just making a comment
+
 var data=[
   {
   name : "Granite Hill", 
